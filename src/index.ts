@@ -5,8 +5,10 @@ import mangoose from "mongoose";
 import myUserRoute from "./routes/MyUserRoute";
 import { v2 as cloudinary } from "cloudinary";
 import myTiffineServiceRoute from "./routes/MyTiffineServiceRoute";
+import TiffineServiceRoute from "./routes/TiffineServiceRoute";
 
-mangoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(()=> console.log("Connected to database!"));
+mangoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
+.then(()=> console.log("Connected to database!"));
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -24,6 +26,7 @@ app.get("/health", async (req: Request , res: Response)=>{
 
 app.use("/api/my/user", myUserRoute);
 app.use("/api/my/tiffineService", myTiffineServiceRoute);
+app.use("/api/tiffineService", TiffineServiceRoute);
 
 app.listen(7000, () =>{
     console.log("server started on localhost:7000");
