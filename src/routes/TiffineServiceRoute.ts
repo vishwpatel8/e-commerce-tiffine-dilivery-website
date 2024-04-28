@@ -4,15 +4,15 @@ import TiffineServiceController from "../controllers/TiffineServiceController";
 
 const router = express.Router();
 
-// router.get(
-//   "/:restaurantId",
-//   param("restaurantId")
-//     .isString()
-//     .trim()
-//     .notEmpty()
-//     .withMessage("RestaurantId paramenter must be a valid string"),
-//   RestaurantController.getRestaurant
-// );
+router.get(
+  "/:tiffineServiceId",
+  param("tiffineServiceId")
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("TiffineServiceId paramenter must be a valid string"),
+  TiffineServiceController.getTiffineService
+);
 // api/tiffineService/search/Ahmedabad
 router.get(
   "/search/:city",
