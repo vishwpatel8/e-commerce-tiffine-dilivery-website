@@ -1,11 +1,24 @@
 import Stripe from "stripe";
 import TiffineService, { MenuItemType } from "../models/tiffineService";
 import { Request, Response } from "express";
-import Order from "../models/Order";
+import Order from "../models/order";
 
 const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
 const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
+
+const getMyOrders = async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find({ user: req.userId })
+      .populate("tiffineService")
+      .populate("user");
+
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+};
 
 type CheckoutSessionRequest = {
   cartItems: {
@@ -22,7 +35,7 @@ type CheckoutSessionRequest = {
   tiffineServiceId: string;
 };
 
-const stripeWebhookHandler = async (req: Request, res: Response )=>{
+const stripeWebhookHandler = async (req: Request, res: Response )=> {
   let event;
 
   try {
@@ -87,7 +100,7 @@ const createCheckoutSession = async (req: Request, res: Response) => {
     );
 
     if (!session.url) {
-      return res.status(500).json({ message: "error creating stripe session" });
+      return res.status(500).json({ message: "Error creating stripe session" });
     }
 
     await newOrder.save();
@@ -97,7 +110,6 @@ const createCheckoutSession = async (req: Request, res: Response) => {
     res.status(500).json({ message: error.raw.message });
   }
 };
-
 
 const createLineItems = (
   checkoutSessionRequest: CheckoutSessionRequest,
@@ -125,6 +137,7 @@ const createLineItems = (
     };
     return line_item;
   });
+  
   return lineItems;
 };
 
@@ -161,6 +174,7 @@ const createSession = async (
 };
 
 export default {
+  getMyOrders,
   createCheckoutSession,
   stripeWebhookHandler,
 }

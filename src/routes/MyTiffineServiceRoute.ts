@@ -13,7 +13,22 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024, //5mb
   },
 });
-//GET /api/my/tiffineService
+
+router.get(
+  "/order",
+   jwtCheck, 
+   jwtParse, 
+   MyTiffineServiceController.getMyTiffineServiceOrders
+  );
+
+  router.patch(
+    "/order/:orderId/status",
+    jwtCheck,
+    jwtParse,
+    MyTiffineServiceController.updateOrderStatus
+  );
+  
+
 router.get("/", jwtCheck, jwtParse, MyTiffineServiceController.getMyTiffineService);
 // api/my/tiffineService
 router.post(

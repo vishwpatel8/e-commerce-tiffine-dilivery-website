@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-  tiffineService: { type: mongoose.Schema.Types.ObjectId, ref: "" },
+  tiffineService: { type: mongoose.Schema.Types.ObjectId, ref: "TiffineService" },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   deliveryDetails: {
     email: { type: String, required: true },
@@ -24,5 +24,5 @@ const orderSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const Order = mongoose.model("Order", orderSchema);
-export default Order;
+const order = mongoose.model("Order", orderSchema);
+export default order;
