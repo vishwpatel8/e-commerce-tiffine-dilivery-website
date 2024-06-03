@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import TiffineService from "../models/tiffineService";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
-import Order from "../models/Order";
+import Order from "../models/order";
 
 const getMyTiffineService = async (req: Request, res: Response) => {
     try {
